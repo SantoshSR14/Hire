@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>HirePulse — Jobs & Internships</title>
+  <link rel="stylesheet" href="index.css"/>
+</head>
+<body>
+
+<header>
+  <div class="container">
+    <div class="nav-inner">
+      <div class="logo" onclick="App.go('home')">
+        <div class="logo-dot"></div>HirePulse
+      </div>
+      <ul class="nav-links-list" id="nav-list"></ul>
+      <div class="nav-auth" id="nav-auth"></div>
+    </div>
+  </div>
+</header>
+
+<main id="root"></main>
+<div class="toast-wrap" id="toasts"></div>
+
+<!-- MODAL: AUTH -->
+<div class="overlay" id="m-auth">
+  <div class="modal">
+    <div class="modal-x" onclick="App.closeModal('m-auth')">&#x2715;</div>
+    <div class="auth-tabs">
+      <div class="auth-tab active" id="tab-login" onclick="App.authTab('login')">Log In</div>
+      <div class="auth-tab" id="tab-reg" onclick="App.authTab('reg')">Sign Up</div>
+    </div>
+    <form id="f-login" onsubmit="App.doLogin(event)">
+      <div class="modal-sub">Welcome back — log in to continue.</div>
+      <div class="fgroup">
+        <label class="flabel">Email</label>
+        <input class="finput" type="email" id="li-email" placeholder="you@example.com" required/>
+      </div>
+      <div class="fgroup">
+        <label class="flabel">Password</label>
+        <input class="finput" type="password" id="li-pass" placeholder="Your password" required/>
+      </div>
+      <button class="btn btn-primary" style="width:100%;margin-top:6px" type="submit">Log In</button>
+    </form>
+    <form id="f-reg" onsubmit="App.doRegister(event)" style="display:none">
+      <div class="modal-sub">Create your free account.</div>
+      <div class="fgroup">
+        <label class="flabel">Full Name</label>
+        <input class="finput" type="text" id="rg-name" placeholder="Your full name" required/>
+      </div>
+      <div class="fgroup">
+        <label class="flabel">Email</label>
+        <input class="finput" type="email" id="rg-email" placeholder="you@example.com" required/>
+      </div>
+      <div class="fgroup">
+        <label class="flabel">Password</label>
+        <input class="finput" type="password" id="rg-pass" placeholder="Min 6 characters" required/>
+      </div>
+      <div class="fgroup">
+        <label class="flabel">I am a</label>
+        <select class="finput" id="rg-role">
+          <option value="USER">Student / Job Seeker</option>
+          <option value="ADMIN">Recruiter / Admin</option>
+        </select>
+      </div>
+      <button class="btn btn-primary" style="width:100%;margin-top:6px" type="submit">Create Account</button>
+    </form>
+  </div>
+</div>
+
+<!-- MODAL: APPLY -->
+<div class="overlay" id="m-apply">
+  <div class="modal">
+    <div class="modal-x" onclick="App.closeModal('m-apply')">&#x2715;</div>
+    <div class="modal-title">Submit Application</div>
+    <div class="modal-sub" id="apply-job-label"></div>
+    <form id="f-apply" onsubmit="App.doApply(event)">
+      <input type="hidden" id="apply-jid"/>
+      <div class="fgroup">
+        <label class="flabel">Resume URL <span style="color:var(--rose)">*</span></label>
+        <input class="finput" type="url" id="ap-resume" placeholder="https://drive.google.com/your-resume" required/>
+      </div>
+      <div class="fgroup">
+        <label class="flabel">Cover Letter (optional)</label>
+        <textarea class="finput" id="ap-letter" placeholder="Tell the recruiter why you're the right fit..."></textarea>
+      </div>
+      <div style="display:flex;gap:10px;margin-top:4px">
+        <button type="button" class="btn btn-secondary" style="flex:1" onclick="App.closeModal('m-apply')">Cancel</button>
+        <button type="submit" class="btn btn-primary" style="flex:2">Submit Application</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- MODAL: POST / EDIT JOB -->
+<div class="overlay" id="m-job">
+  <div class="modal modal-wide">
+    <div class="modal-x" onclick="App.closeModal('m-job')">&#x2715;</div>
+    <div class="modal-title" id="job-modal-title">Post New Opportunity</div>
+    <div class="modal-sub">Fill in the details to publish a listing.</div>
+    <form id="f-job" onsubmit="App.doSaveJob(event)">
+      <input type="hidden" id="job-edit-id"/>
+      <div class="frow">
+        <div class="fgroup">
+          <label class="flabel">Job Title *</label>
+          <input class="finput" type="text" id="jb-title" placeholder="e.g. Frontend Developer" required/>
+        </div>
+        <div class="fgroup">
+          <label class="flabel">Company *</label>
+          <input class="finput" type="text" id="jb-company" placeholder="e.g. Wyntrix Innovation" required/>
+        </div>
+      </div>
+      <div class="frow">
+        <div class="fgroup">
+          <label class="flabel">Type *</label>
+          <select class="finput" id="jb-type">
+            <option value="JOB">Full-Time Job</option>
+            <option value="INTERNSHIP">Internship</option>
+          </select>
+        </div>
+        <div class="fgroup">
+          <label class="flabel">Domain *</label>
+          <select class="finput" id="jb-domain">
+            <option value="Technology">Technology</option>
+            <option value="Finance">Finance</option>
+            <option value="Marketing">Marketing</option>
+            <option value="Design">Design</option>
+            <option value="Data Science">Data Science</option>
+            <option value="Healthcare">Healthcare</option>
+            <option value="Education">Education</option>
+            <option value="Engineering">Engineering</option>
+          </select>
+        </div>
+      </div>
+      <div class="frow">
+        <div class="fgroup">
+          <label class="flabel">Location *</label>
+          <input class="finput" type="text" id="jb-location" placeholder="e.g. Chennai, Tamil Nadu" required/>
+        </div>
+        <div class="fgroup">
+          <label class="flabel">Deadline</label>
+          <input class="finput" type="date" id="jb-deadline"/>
+        </div>
+      </div>
+      <div class="fgroup">
+        <label class="flabel">Description *</label>
+        <textarea class="finput" id="jb-desc" placeholder="Describe the role, responsibilities and requirements..." style="min-height:120px" required></textarea>
+      </div>
+      <div style="display:flex;gap:10px;margin-top:4px">
+        <button type="button" class="btn btn-secondary" style="flex:1" onclick="App.closeModal('m-job')">Cancel</button>
+        <button type="submit" class="btn btn-primary" style="flex:2" id="job-submit-btn">Publish Opportunity</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
