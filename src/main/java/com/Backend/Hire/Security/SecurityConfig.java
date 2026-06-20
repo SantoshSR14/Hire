@@ -1,4 +1,5 @@
 package com.Backend.Hire.Security;
+import org.springframework.security.config.Customizer;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
