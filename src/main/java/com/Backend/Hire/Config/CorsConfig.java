@@ -11,7 +11,7 @@ public class CorsConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/api/**")
                 .allowedOrigins(
-                       "https://lovely-longma-37f930.netlify.app/",
+                       "https://comfy-fudge-1899af.netlify.app/",
                         "http://localhost:5173",  // Vite dev server
                         "http://localhost:3000"   // fallback
                 )
