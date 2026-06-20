@@ -3,7 +3,7 @@
    Connects to Spring Boot at localhost:8080
    ══════════════════════════════════════════════ */
 
-const BASE = 'https://hire-production-7daa.up.railway.app/api';
+const BASE = 'https://hire-production-bb7b.up.railway.app/api';
 
 // ─── AUTH SESSION ────────────────────────────
 const S = {
