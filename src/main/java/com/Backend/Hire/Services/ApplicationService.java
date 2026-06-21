@@ -24,6 +24,7 @@ public class ApplicationService {
     private final UserRepo userRepository;
 
     // ── User: apply for a job ────────────────────────────────
+    @Transactional
     public ApplicationRes applyForJob(ApplicationReq request,
                                            String userEmail) {
         User user = userRepository.findByEmail(userEmail)
@@ -49,6 +50,7 @@ public class ApplicationService {
     }
 
     // ── User: get my applications ────────────────────────────
+    @Transactional
     public List<ApplicationRes> getMyApplications(String userEmail) {
         User user = userRepository.findByEmail(userEmail)
                 .orElseThrow(() -> new RuntimeException("User not found"));
@@ -60,6 +62,7 @@ public class ApplicationService {
     }
 
     // ── Admin: get all applications for a job ────────────────
+    @Transactional
     public List<ApplicationRes> getApplicationsForJob(Long jobId,
                                                            String adminEmail) {
         Job job = jobRepository.findById(jobId)
@@ -77,6 +80,7 @@ public class ApplicationService {
     }
 
     // ── Admin: update application status ────────────────────
+    @Transactional
     public ApplicationRes updateStatus(Long applicationId,
                                             String status,
                                             String adminEmail) {
