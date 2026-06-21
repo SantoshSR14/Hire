@@ -20,6 +20,7 @@ public class JobService {
     private final UserRepo userRepository;
 
     // ── Admin: post a new job ────────────────────────────────
+    @Transactional
     public JobRes createJob(JobReq request, String adminEmail) {
         User admin = userRepository.findByEmail(adminEmail)
                 .orElseThrow(() -> new RuntimeException("Admin not found"));
@@ -39,6 +40,7 @@ public class JobService {
     }
 
     // ── Public: get all jobs with optional filters ───────────
+    @Transactional(readOnly = true) 
     public List<JobRes> getAllJobs(String domain, String keyword) {
         List<Job> jobs;
 
@@ -59,6 +61,7 @@ public class JobService {
     }
 
     // ── Public: get single job by id ─────────────────────────
+    @Transactional(readOnly = true) 
     public JobRes getJobById(Long id) {
         Job job = jobRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Job not found with id: " + id));
@@ -66,6 +69,7 @@ public class JobService {
     }
 
     // ── Admin: get jobs posted by this admin ─────────────────
+    @Transactional(readOnly = true) 
     public List<JobRes> getJobsByAdmin(String adminEmail) {
         User admin = userRepository.findByEmail(adminEmail)
                 .orElseThrow(() -> new RuntimeException("Admin not found"));
@@ -76,6 +80,7 @@ public class JobService {
     }
 
     // ── Admin: update a job ──────────────────────────────────
+    @Transactional
     public JobRes updateJob(Long id, JobReq request, String adminEmail) {
         Job job = jobRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Job not found with id: " + id));
@@ -97,6 +102,7 @@ public class JobService {
     }
 
     // ── Admin: delete a job ──────────────────────────────────
+    @Transactional
     public void deleteJob(Long id, String adminEmail) {
         Job job = jobRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Job not found with id: " + id));
